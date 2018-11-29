@@ -1,0 +1,83 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    //支持lambda表达式
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.trio.standard"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //butterknife添加
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+
+        //个推
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "PxXAebIUhn6DJcmDjK6Wr1",
+                GETUI_APP_KEY   : "YhEeOEgp1sAPzL8EwmOm4A",
+                GETUI_APP_SECRET: "u79rxK2cthAEQoxhtxoN62"
+        ]
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86_64", "x86"
+        }
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27+'
+    implementation 'com.android.support:design:27+'
+    compile 'com.android.support:support-v4:27+'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //第三方
+    //butterknife:View注入框架 (AS要安装插件Android ButterKnife Zelezny)
+    implementation 'com.jakewharton:butterknife:7.0.1'
+    //lombok:注解 减少代码书写 (AS要安装插件Lombok plugin)
+    compileOnly 'org.projectlombok:lombok:1.18.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    //工具包
+    implementation 'com.blankj:utilcode:1.13.0'
+    //底部栏 google
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.5'
+    //知乎开源图片选择器 + gilde
+    api('com.zhihu.android:matisse:0.5.1') {
+        exclude group: 'com.android.support'
+    }
+    implementation files('libs/glide-3.7.0.jar')
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    //OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+
+    compile 'com.alibaba:fastjson:1.1.70.android'
+    //RxJava RxAndroid Rxlifecycle
+    implementation 'io.reactivex:rxjava:1.3.4'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'com.trello:rxlifecycle:1.0'
+    implementation 'com.trello:rxlifecycle-components:1.0'
+
+    //个推
+    compile 'com.getui:sdk:2.12.5.0'
+
+}

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">TrioStandard</string>
+
+    <string name="home">主页</string>
+    <string name="image">图片</string>
+    <string name="file">文件</string>
+    <string name="list">列表</string>
+    <string name="music">音乐</string>
+    <string name="show">剧集</string>
+
+    <string name="loading">Loading</string>
+    <string name="downloading">Downloading</string>
+
+    <string name="file_selector_file">Select a file</string>
+    <string name="file_selector_dir">Select a directory</string>
+    <string name="file_selector_dir_ok">Select</string>
+    <string name="file_selector_upper">&#8230;return to the upper folder</string>
+    <string name="file_selector_get_fail">Failed to get the files list！</string>
+
+    <string name="file_select_path">已选文件: %1$s</string>
+    <string name="file_download_path">文件下载地址: %1$s</string>
+    <string name="database_count">当前数据库共有数据: %1$s 条</string>
+
+    <string name="error_unknow">未知错误</string>
+    <string name="error_getui_cid">用户cid错误</string>
+    <string name="error_system_permission">请前往设置开启权限</string>
+    <string name="error_copy_file">复制单个文件操作出错</string>
+    <string name="error_image_num">图片数量不能为0</string>
+    <string name="error_no_internet">网络无连接</string>
+    <string name="toast_please_wait">获取数据中,请稍后...</string>
+    <string name="toast_download_finish">下载完成</string>
+    <string name="toast_download_file">下载文件</string>
+    <string name="toast_upload_finish">上传完成</string>
+    <string name="toast_upload_file">上传文件</string>
+    <string name="toast_upload_image">上传图片</string>
+
+</resources>

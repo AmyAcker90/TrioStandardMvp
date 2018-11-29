@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomToolBar">
+        <attr name="title_text" format="string"/>
+        <attr name="title_size" format="dimension"/>
+        <attr name="title_color" format="color"/>
+        <attr name="background_color" format="color"/>
+        <attr name="hide_back_icon" format="boolean"/>
+    </declare-styleable>
+
+</resources>
