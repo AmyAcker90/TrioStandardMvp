@@ -1,5 +1,7 @@
 package com.trio.standard.net;
 
+import com.blankj.utilcode.util.LogUtils;
+
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -99,6 +101,7 @@ public class ProgressRequestBody extends RequestBody {
                 if (progressListener != null)
                     progressListener.onProgress(bytesWritten, contentLength, (int) (100 * bytesWritten / contentLength),
                             bytesWritten == contentLength);
+                LogUtils.i("onProgress: "+contentLength+"  bytesWritten: "+bytesWritten);
             }
         };
     }

@@ -12,7 +12,6 @@ import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONArray;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.trio.standard.R;
 import com.trio.standard.adapter.CategoryAdapter;
@@ -20,7 +19,7 @@ import com.trio.standard.adapter.ShowAdapter;
 import com.trio.standard.api.bean.Category;
 import com.trio.standard.api.bean.ShowInfo;
 import com.trio.standard.constant.HttpConstant;
-import com.trio.standard.module.base.BaseFragment;
+import com.trio.standard.module.base.BaseMvpFragment;
 import com.trio.standard.utils.CacheUtil;
 import com.trio.standard.widgets.CustomToolBar;
 import com.trio.standard.widgets.DelEditText;
@@ -35,7 +34,7 @@ import butterknife.OnClick;
  * Created by lixia on 2018/11/26.
  */
 
-public class ShowListFragment extends BaseFragment<ShowListPresenter> implements ShowListView {
+public class ShowListFragment extends BaseMvpFragment<ShowListView, ShowListPresenter> implements ShowListView {
 
     @Bind(R.id.customToolBar)
     CustomToolBar mCustomToolBar;
@@ -69,8 +68,6 @@ public class ShowListFragment extends BaseFragment<ShowListPresenter> implements
 
     @Override
     protected void init() {
-        mPresenter = new ShowListPresenter(mContext, this);
-        mPresenter.queryCategotyAll();
         mAdapter = new ShowAdapter(mContext, mData);
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerview.setLayoutManager(mLayoutManager);
@@ -98,29 +95,40 @@ public class ShowListFragment extends BaseFragment<ShowListPresenter> implements
             return false;
         });
 
+        mPresenter.queryCategotyAll();
         //获取缓存
         String cache = CacheUtil.getInstance(mContext).getString(HttpConstant.queryShowInfoList);
-        if (!TextUtils.isEmpty(cache)) {
-            List<ShowInfo> list = jsonToList(cache, ShowInfo.class);
-            showListData(list);
-        } else
+        if (!TextUtils.isEmpty(cache))
+            updateShows(jsonToList(cache, ShowInfo.class));
+        else
             queryData(true);
     }
 
     @Override
-    protected void queryData(boolean isRefresh) {
+    protected ShowListPresenter createPresenter() {
+        return new ShowListPresenter(mContext, this);
+    }
+
+    void queryData(boolean isRefresh) {
         if (isRefresh)
             index = 0L;
         mPresenter.queryShowInfoList(keyword, category, index);
     }
 
     @Override
-    public void showListData(List<ShowInfo> data) {
-        mVsEmpty.setVisibility(View.GONE);
-        mRecyclerview.setVisibility(View.VISIBLE);
-        index = data.get(data.size() - 1).getShowId();
-        mData = data;
-        mAdapter.setData(data);
+    public void updateShows(List<ShowInfo> data) {
+        if (index == 0)
+            mData.clear();
+        mData.addAll(data);
+        if (data != null && data.size() > 0) {
+            mVsEmpty.setVisibility(View.GONE);
+            mRecyclerview.setVisibility(View.VISIBLE);
+            index = data.get(data.size() - 1).getShowId();
+        } else {
+            mVsEmpty.setVisibility(View.VISIBLE);
+            mRecyclerview.setVisibility(View.GONE);
+        }
+        mAdapter.setData(mData);
     }
 
     @Override
@@ -129,7 +137,7 @@ public class ShowListFragment extends BaseFragment<ShowListPresenter> implements
     }
 
     @Override
-    public void categoryData(List<Category> data) {
+    public void updateCategorys(List<Category> data) {
         mCategories = data;
     }
 
@@ -139,16 +147,10 @@ public class ShowListFragment extends BaseFragment<ShowListPresenter> implements
         this.isBottom = isBottom;
     }
 
-    @Override
     public void onError(int requestCode, int errorCode, String msg) {
-        super.onError(requestCode, errorCode, msg);
         if (requestCode == HttpConstant.queryShowInfoListCode) {
             if (index == 0)
-                mData.clear();
-            if (mData == null || mData.size() == 0) {
-                mVsEmpty.setVisibility(View.VISIBLE);
-                mRecyclerview.setVisibility(View.GONE);
-            }
+                updateShows(null);
         }
     }
 

@@ -52,7 +52,7 @@
             android:process=":pushservice">
         </service>
 
-        <activity android:name=".module.file.FileActivity">
+        <activity android:name=".module.file.FilePickActivity">
         </activity>
     </application>
 

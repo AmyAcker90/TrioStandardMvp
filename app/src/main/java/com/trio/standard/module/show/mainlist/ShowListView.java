@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ShowListView extends BaseView {
 
-    void showListData(List<ShowInfo> data);
+    void updateShows(List<ShowInfo> data);
 
-    void categoryData(List<Category> data);
+    void updateCategorys(List<Category> data);
 }

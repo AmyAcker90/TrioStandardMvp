@@ -4,26 +4,25 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.trio.standard.R;
 import com.trio.standard.constant.HttpConstant;
-import com.trio.standard.widgets.LoadingDialog;
 
 import butterknife.ButterKnife;
 
 /**
- * Created by lixia on 2018/11/21.
+ * Created by lixia on 2018/11/30.
  */
+public abstract class BaseMvpActivity<V extends BaseView, P extends BasePresenter<V>>
+        extends AppCompatActivity implements BaseView {
 
-public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatActivity implements BaseView {
-
-    protected T mPresenter;
+    protected P mPresenter;
     protected Context mContext;
-    private LoadingDialog mLoadingDialog;
+
+    protected abstract P createPresenter();
 
     /**
      * 绑定布局文件
@@ -43,17 +42,23 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
         super.onCreate(savedInstanceState);
         setContentView(attachLayoutRes());
         mContext = this;
+        mPresenter = createPresenter();
         ButterKnife.bind(this);
         init();
     }
 
     @Override
-    public void onSuccess(int requestCode, Object data) {
+    public void showLoading(String msg, boolean cancelable) {
 
     }
 
     @Override
-    public void onError(int requestCode, int errorCode, String msg) {
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(int errorCode, String msg) {
         switch (errorCode) {
             case HttpConstant.error_no_data:
                 break;
@@ -74,38 +79,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
     }
 
     @Override
-    public <T> LifecycleTransformer<T> bindToLife() {
-        return this.<T>bindToLifecycle();
-    }
-
-
-    @Override
-    public void showLoading(String msg, boolean cancelable) {
-        hideLoading();
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog(this, msg, true);
-        }
-        mLoadingDialog.setMessage(msg);
-        mLoadingDialog.setCancelable(cancelable);
-        mLoadingDialog.show();
-    }
-
-    @Override
-    public void hideLoading() {
-        runOnUiThread(() -> {
-            if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-                mLoadingDialog.dismiss();
-                mLoadingDialog = null;
-            }
-        });
-    }
-
-    public void toBack(View view) {
-        if (view.getVisibility() == View.VISIBLE)
-            finish();
-    }
-
-    @Override
     public void setRefreshing(boolean isRefreshing) {
 
     }
@@ -115,8 +88,27 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
 
     }
 
-    @Override
-    public void onProgress(int requestCode, int progress) {
-
+    public void toBack(View view) {
+        if (view.getVisibility() == View.VISIBLE)
+            finish();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mPresenter != null) {
+            mPresenter.attach((V) this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mPresenter != null) {
+            mPresenter.detach();
+        }
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
+
+
 }

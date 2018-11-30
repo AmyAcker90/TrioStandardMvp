@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.trio.standard.widgets.CustomToolBar
         android:id="@+id/customToolBar"
@@ -11,6 +12,9 @@
         android:layout_height="@dimen/toolBar_height"
         app:background_color="@color/colorPrimary"
         app:hide_back_icon="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:title_text="我是fragment2"/>
 
     <TextView
@@ -20,18 +24,15 @@
         android:layout_marginStart="16dp"
         android:text="图片数量"
         app:layout_constraintBottom_toBottomOf="@+id/radiogroup"
-        app:layout_constraintEnd_toStartOf="@+id/radiogroup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/radiogroup"/>
 
     <RadioGroup
         android:id="@+id/radiogroup"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@id/textView"
         app:layout_constraintTop_toBottomOf="@+id/customToolBar">
 
         <RadioButton
@@ -52,8 +53,6 @@
         android:id="@+id/imagepicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radiogroup"/>
 
     <com.trio.standard.widgets.ProgressButton
@@ -64,50 +63,17 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imagepicker"/>
 
-    <ImageView
-        android:id="@+id/image1"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <com.trio.standard.widgets.ProgressButton
+        android:id="@+id/pb_download"
+        style="@style/StyleTextProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@+id/pb_upload"/>
-
-    <ImageView
-        android:id="@+id/image2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintBottom_toBottomOf="@+id/image1"
-        app:layout_constraintStart_toEndOf="@+id/image1"
-        app:layout_constraintTop_toTopOf="@+id/image1"
-        app:layout_constraintVertical_bias="0.0"/>
-
-    <ImageView
-        android:id="@+id/image3"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image1"/>
-
-    <ImageView
-        android:id="@+id/image4"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintStart_toEndOf="@+id/image3"
-        app:layout_constraintTop_toBottomOf="@+id/image2"/>
 
     <Button
         android:id="@+id/btn_file"
@@ -115,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="文件下载"
-        app:layout_constraintTop_toBottomOf="@+id/image4"/>
+        android:layout_marginTop="16dp"
+        android:text="文件选择"
+        app:layout_constraintTop_toBottomOf="@+id/pb_download"/>
 </android.support.constraint.ConstraintLayout>

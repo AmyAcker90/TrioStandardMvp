@@ -1,22 +1,18 @@
-package com.trio.standard.module.music.main;
+package com.trio.standard.module.music;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.trio.standard.R;
 import com.trio.standard.adapter.MusicAdapter;
-import com.trio.standard.adapter.base.MultiItemTypeAdapter;
 import com.trio.standard.api.bean.MusicBean;
-import com.trio.standard.constant.HttpConstant;
-import com.trio.standard.module.base.BaseFragment;
+import com.trio.standard.module.base.BaseMvpFragment;
 import com.trio.standard.widgets.CustomToolBar;
 import com.trio.standard.widgets.DelEditText;
 
@@ -26,10 +22,10 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
- * Created by lixia on 2018/11/26.
+ * Created by lixia on 2018/11/30.
  */
 
-public class MusicSearchFragment extends BaseFragment<MusicSearchPresenter> implements MusicSearchView {
+public class MusicFragment extends BaseMvpFragment<MusicView, MusicPresenter> implements MusicView {
 
     @Bind(R.id.customToolBar)
     CustomToolBar mCustomToolBar;
@@ -51,6 +47,11 @@ public class MusicSearchFragment extends BaseFragment<MusicSearchPresenter> impl
     private int index = 0;
 
     @Override
+    protected MusicPresenter createPresenter() {
+        return new MusicPresenter(this);
+    }
+
+    @Override
     protected int attachLayoutRes() {
         return R.layout.fragment_music_search;
     }
@@ -61,7 +62,6 @@ public class MusicSearchFragment extends BaseFragment<MusicSearchPresenter> impl
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerview.setLayoutManager(mLayoutManager);
         mRecyclerview.setAdapter(mAdapter);
-        mPresenter = new MusicSearchPresenter(this);
         mEtKeyword.setOnEditorActionListener((v, actionId, event) -> {
             keyword = mEtKeyword.getText().toString();
             if (actionId == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(keyword)) {
@@ -90,22 +90,31 @@ public class MusicSearchFragment extends BaseFragment<MusicSearchPresenter> impl
         });
     }
 
-    @Override
-    protected void queryData(boolean isRefresh) {
+    private void queryData(boolean isRefresh) {
         if (isRefresh)
             index = 0;
-        mPresenter.loadDataByKeyword(keyword, index);
+        mPresenter.searchMusic(keyword, index);
     }
 
     @Override
-    public void showData(List<MusicBean> data) {
-        mSwipeRefresh.setRefreshing(false);
-        isQuery = false;
-        if (data.size() < HttpConstant.default_page_size)
-            isBottom = true;
-        else
-            isBottom = false;
-        mAdapter.setData(data);
+    public void updateMusic(List<MusicBean> data) {
+        if (index == 0)
+            mData.clear();
+        mData.addAll(data);
+        if (data != null && data.size() > 0) {
+            mVsEmpty.setVisibility(View.GONE);
+            mRecyclerview.setVisibility(View.VISIBLE);
+            index++;
+        } else {
+            mVsEmpty.setVisibility(View.VISIBLE);
+            mRecyclerview.setVisibility(View.GONE);
+        }
+        mAdapter.setData(mData);
     }
 
+    @Override
+    public void onBottom(boolean isBottom) {
+        super.onBottom(isBottom);
+        this.isBottom = isBottom;
+    }
 }

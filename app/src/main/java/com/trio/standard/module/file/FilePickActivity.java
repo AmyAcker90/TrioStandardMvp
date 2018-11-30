@@ -1,39 +1,26 @@
 package com.trio.standard.module.file;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Environment;
-import android.os.StatFs;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.format.Formatter;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.trio.standard.R;
-import com.trio.standard.adapter.FileSelectAdapter;
-import com.trio.standard.constant.HttpConstant;
-import com.trio.standard.module.base.BaseActivity;
+import com.trio.standard.module.base.BaseMvpActivity;
+import com.trio.standard.module.base.BasePresenter;
+import com.trio.standard.utils.ImageUtil;
 import com.trio.standard.widgets.FileSelectorDialog;
-import com.trio.standard.widgets.ProgressButton;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class FileActivity extends BaseActivity<FilePresenter> implements FileView {
+public class FilePickActivity extends BaseMvpActivity {
 
     @Bind(R.id.bt_file_pick)
     Button mBtFilePick;
@@ -49,15 +36,27 @@ public class FileActivity extends BaseActivity<FilePresenter> implements FileVie
     RadioGroup mRadiogroup;
     @Bind(R.id.tv_file)
     TextView mTvFile;
-    @Bind(R.id.progress_bt_download)
-    ProgressButton mProgressBtDownload;
+    @Bind(R.id.image1)
+    ImageView mImage1;
+    @Bind(R.id.image2)
+    ImageView mImage2;
+    @Bind(R.id.image3)
+    ImageView mImage3;
+    @Bind(R.id.image4)
+    ImageView mImage4;
 
     private FileSelectorDialog fileDialog;
     private int filterMode = FileSelectorDialog.FILTER_MODE.FILTER_ALL.ordinal();
+    private String imageUrl = "http://pic22.nipic.com/20120621/1628220_155636709122_2.jpg";
 
     @Override
     protected int attachLayoutRes() {
         return R.layout.activity_file;
+    }
+
+    @Override
+    protected BasePresenter createPresenter() {
+        return null;
     }
 
     @Override
@@ -97,10 +96,11 @@ public class FileActivity extends BaseActivity<FilePresenter> implements FileVie
                     break;
             }
         });
-        mPresenter = new FilePresenter(this);
-        mProgressBtDownload.setState(ProgressButton.STATE.NORMAL, getString(R.string.toast_download_file));
-        mProgressBtDownload.setOnClickListener(v ->
-                mPresenter.downloadFile(145L, HttpConstant.app_file_download));
+
+        ImageUtil.getInstance(mContext).load(imageUrl, mImage1);
+        ImageUtil.getInstance(mContext).loadCenterCrop(imageUrl, mImage2);
+        ImageUtil.getInstance(mContext).loadRound(imageUrl, mImage3);
+        ImageUtil.getInstance(mContext).loadRadius(imageUrl, mImage4, 30);
     }
 
     @OnClick({R.id.bt_file_pick})

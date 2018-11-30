@@ -70,7 +70,7 @@ public class ProgressButton extends ProgressBar {
         invalidate();
     }
 
-    public synchronized void setProgress(int progress) {
+    public void setProgress(int progress) {
         if (progress < 0)
             progress = 0;
         if (progress > 100)

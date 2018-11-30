@@ -6,11 +6,10 @@ import android.text.TextUtils;
 
 import com.trio.standard.R;
 import com.trio.standard.api.PushApi;
-import com.trio.standard.constant.HttpConstant;
 import com.trio.standard.context.AppContext;
-import com.trio.standard.net.BaseObserver;
 import com.trio.standard.module.base.BasePresenter;
 import com.trio.standard.module.base.BaseView;
+import com.trio.standard.net.BaseObserver;
 import com.trio.standard.net.RetrofitFactory;
 import com.trio.standard.widgets.DatePickerBuilder;
 
@@ -21,7 +20,7 @@ import rx.schedulers.Schedulers;
  * Created by lixia on 2018/11/28.
  */
 
-class DatePresenter implements BasePresenter {
+class DatePresenter extends BasePresenter<BaseView> {
 
     private BaseView mView;
     private Context mContext;
@@ -37,7 +36,6 @@ class DatePresenter implements BasePresenter {
                     .pushOne(AppContext.clientId, title, content)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(mView.bindToLife())
                     .subscribe(new BaseObserver<String>() {
                         @Override
                         protected void onSuccessResponse(String result) {
@@ -45,11 +43,11 @@ class DatePresenter implements BasePresenter {
 
                         @Override
                         protected void onErrorResponse(int ret, String msg) {
-                            mView.onError(HttpConstant.pushOneCode, ret, msg);
+                            mView.showError(ret, msg);
                         }
                     });
         } else
-            mView.onError(HttpConstant.pushOneCode, HttpConstant.error_unknown, mContext.getString(R.string
+            mView.showError(0, mContext.getString(R.string
                     .error_getui_cid));
     }
 

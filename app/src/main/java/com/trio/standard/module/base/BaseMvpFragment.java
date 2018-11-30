@@ -1,37 +1,38 @@
 package com.trio.standard.module.base;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.components.support.RxFragment;
+import com.blankj.utilcode.util.LogUtils;
 import com.trio.standard.R;
 import com.trio.standard.constant.HttpConstant;
-import com.trio.standard.widgets.LoadingDialog;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 
 /**
- * Created by lixia on 2018/11/26.
+ * Created by lixia on 2018/11/30.
  */
 
-public abstract class BaseFragment<T extends BasePresenter> extends RxFragment implements BaseView {
+public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresenter<V>>
+        extends Fragment implements BaseView {
 
-    protected T mPresenter;
+    protected P mPresenter;
     protected Context mContext;
     //缓存Fragment view
     private View mRootView;
-    private LoadingDialog mLoadingDialog;
+
+    protected abstract P createPresenter();
 
     /**
      * 绑定布局文件
@@ -46,14 +47,12 @@ public abstract class BaseFragment<T extends BasePresenter> extends RxFragment i
      */
     protected abstract void init();
 
-    protected void queryData(boolean isRefresh) {
-
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+        mPresenter = createPresenter();
+        LogUtils.i("onCreate");
     }
 
     @Nullable
@@ -73,17 +72,26 @@ public abstract class BaseFragment<T extends BasePresenter> extends RxFragment i
     }
 
     @Override
-    public <T> LifecycleTransformer<T> bindToLife() {
-        return this.<T>bindToLifecycle();
+    public void onResume() {
+        super.onResume();
+        LogUtils.i("onResume");
+        if (mPresenter != null) {
+            mPresenter.attach((V) this);
+        }
     }
 
     @Override
-    public void onSuccess(int requestCode, Object data) {
+    public void showLoading(String msg, boolean cancelable) {
 
     }
 
     @Override
-    public void onError(int requestCode, int errorCode, String msg) {
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(int errorCode, String msg) {
         switch (errorCode) {
             case HttpConstant.error_no_data:
                 break;
@@ -104,33 +112,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends RxFragment i
     }
 
     @Override
-    public void showLoading(String msg, boolean cancelable) {
-        hideLoading();
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog(getActivity(), msg, true);
-        }
-        mLoadingDialog.setMessage(msg);
-        mLoadingDialog.setCancelable(cancelable);
-        mLoadingDialog.show();
-    }
-
-    @Override
-    public void hideLoading() {
-        getActivity().runOnUiThread(() -> {
-            if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-                mLoadingDialog.dismiss();
-                mLoadingDialog = null;
-            }
-        });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-    @Override
     public void setRefreshing(boolean isRefreshing) {
 
     }
@@ -141,13 +122,27 @@ public abstract class BaseFragment<T extends BasePresenter> extends RxFragment i
     }
 
     @Override
-    public void onProgress(int requestCode, int progress) {
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        LogUtils.i("onDestroyView");
+        ButterKnife.unbind(this);
     }
 
     public static <T> List<T> jsonToList(String jsonString, Class<T> clazz) {
         @SuppressWarnings("unchecked")
         List<T> ts = (List<T>) JSONArray.parseArray(jsonString, clazz);
         return ts;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LogUtils.i("onDetach");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LogUtils.i("onPause");
     }
 }

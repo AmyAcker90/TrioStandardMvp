@@ -9,17 +9,18 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.igexin.sdk.PushManager;
 import com.trio.standard.R;
-import com.trio.standard.module.base.BaseActivity;
+import com.trio.standard.module.base.BaseMvpActivity;
+import com.trio.standard.module.base.BasePresenter;
 import com.trio.standard.module.date.DateFragment;
-import com.trio.standard.module.image.ImageFragment;
-import com.trio.standard.module.music.main.MusicSearchFragment;
+import com.trio.standard.module.image.FileFragment;
+import com.trio.standard.module.music.MusicFragment;
 import com.trio.standard.module.show.mainlist.ShowListFragment;
 import com.trio.standard.push.IntentService;
 import com.trio.standard.push.PushService;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
+public class MainActivity extends BaseMvpActivity implements BottomNavigationBar.OnTabSelectedListener {
 
     @Bind(R.id.fragment)
     LinearLayout mFragment;
@@ -27,9 +28,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     BottomNavigationBar mBottomNavigationBar;
 
     private DateFragment mDateFragment;
-    private ImageFragment mImageFragment;
+    private FileFragment mImageFragment;
     private ShowListFragment mShowListFragment;
-    private MusicSearchFragment mMusicMainFragment;
+    private MusicFragment mMusicFragment;
     public Fragment curFragmentTag;
 
     @Override
@@ -51,13 +52,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         mBottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         mBottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         mBottomNavigationBar
-                .addItem(new BottomNavigationItem(R.mipmap.ic_file, getString(R.string.home))
-                        .setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_file, getString(R.string.image))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_file, getString(R.string.file))
                         .setActiveColorResource(R.color.colorPrimary))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_file, getString(R.string.show))
                         .setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_file, getString(R.string.list))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_file, getString(R.string.home))
+                        .setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_file, getString(R.string.music))
                         .setActiveColorResource(R.color.colorPrimary))
                 .setFirstSelectedPosition(0)
                 .initialise();
@@ -68,24 +69,24 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public void onTabSelected(int position) {
         switch (position) {
             case 0:
-                if (mDateFragment == null)
-                    mDateFragment = new DateFragment();
-                switchFragment(mDateFragment);
-                break;
-            case 1:
                 if (mImageFragment == null)
-                    mImageFragment = new ImageFragment();
+                    mImageFragment = new FileFragment();
                 switchFragment(mImageFragment);
                 break;
-            case 2:
+            case 1:
                 if (mShowListFragment == null)
                     mShowListFragment = new ShowListFragment();
                 switchFragment(mShowListFragment);
                 break;
+            case 2:
+                if (mDateFragment == null)
+                    mDateFragment = new DateFragment();
+                switchFragment(mDateFragment);
+                break;
             case 3:
-                if (mMusicMainFragment == null)
-                    mMusicMainFragment = new MusicSearchFragment();
-                switchFragment(mMusicMainFragment);
+                if (mMusicFragment == null)
+                    mMusicFragment = new MusicFragment();
+                switchFragment(mMusicFragment);
                 break;
         }
     }
@@ -123,5 +124,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         super.onActivityResult(requestCode, resultCode, data);
         if (curFragmentTag == mImageFragment)
             mImageFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected BasePresenter createPresenter() {
+        return null;
     }
 }

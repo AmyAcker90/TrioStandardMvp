@@ -53,7 +53,7 @@ public class ProgressResponseBody extends ResponseBody {
                 // read() returns the number of bytes read, or -1 if this source is exhausted.
                 totalBytesRead += bytesRead != -1 ? bytesRead : 0;
                 progressListener.onProgress(totalBytesRead, responseBody.contentLength(),
-                        (int) (100 * totalBytesRead / totalBytesRead), bytesRead == -1);
+                        (int) (100 * totalBytesRead / responseBody.contentLength()), bytesRead == -1);
                 return bytesRead;
             }
         };

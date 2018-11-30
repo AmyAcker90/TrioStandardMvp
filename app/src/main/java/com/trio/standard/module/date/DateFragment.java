@@ -10,10 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.trio.standard.R;
-import com.trio.standard.module.base.BaseFragment;
+import com.trio.standard.module.base.BaseMvpFragment;
 import com.trio.standard.module.base.BaseView;
 import com.trio.standard.widgets.CustomToolBar;
-import com.trio.standard.widgets.DatePickerBuilder;
 import com.trio.standard.widgets.ProgressButton;
 
 import butterknife.Bind;
@@ -23,7 +22,7 @@ import butterknife.OnClick;
  * Created by lixia on 2018/11/28.
  */
 
-public class DateFragment extends BaseFragment<DatePresenter> implements BaseView {
+public class DateFragment extends BaseMvpFragment<BaseView, DatePresenter> implements BaseView {
 
     @Bind(R.id.customToolBar)
     CustomToolBar mCustomToolBar;
@@ -58,7 +57,11 @@ public class DateFragment extends BaseFragment<DatePresenter> implements BaseVie
     protected void init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             permission();
-        mPresenter = new DatePresenter(mContext, this);
+    }
+
+    @Override
+    protected DatePresenter createPresenter() {
+        return new DatePresenter(mContext, this);
     }
 
     private void permission() {

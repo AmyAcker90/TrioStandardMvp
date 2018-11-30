@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -38,7 +37,7 @@ public class ImagePicker extends LinearLayout {
 
     public static final int REQUEST_CODE_CHOOSE = 1;
 
-    private GridView mGridView;
+    private GridViewForScrollView mGridView;
     private GridAdapter mAdapter;
     private Context mContext;
 
@@ -77,7 +76,7 @@ public class ImagePicker extends LinearLayout {
         mContext = context;
         LayoutInflater mInflater = LayoutInflater.from(context);
         View view = mInflater.inflate(R.layout.view_image_pick, null);
-        mGridView = (GridView) view.findViewById(R.id.gridview);
+        mGridView = (GridViewForScrollView) view.findViewById(R.id.gridview);
         mAdapter = new GridAdapter();
         mPaths.add(null);
         mGridView.setNumColumns(3);
@@ -163,7 +162,7 @@ public class ImagePicker extends LinearLayout {
             ImageView ivDel = (ImageView) view.findViewById(R.id.iv_delete);
             if (mPaths.get(position) != null) {
                 ivDel.setVisibility(VISIBLE);
-                ImageUtil.getInstance(mContext).loadCenterCrop(mPaths.get(position),imageView);
+                ImageUtil.getInstance(mContext).loadCenterCrop(mPaths.get(position), imageView);
                 ivDel.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -235,5 +234,4 @@ public class ImagePicker extends LinearLayout {
         return ContextCompat.checkSelfPermission(mContexts, permission) ==
                 PackageManager.PERMISSION_DENIED;
     }
-
 }

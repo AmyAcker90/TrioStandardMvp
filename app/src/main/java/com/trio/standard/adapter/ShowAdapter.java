@@ -16,8 +16,8 @@ import java.util.List;
 
 public class ShowAdapter extends MultiItemTypeAdapter<ShowInfo> {
 
-    public ShowAdapter(Context context, List<ShowInfo> datas) {
-        super(context, datas);
+    public ShowAdapter(Context context, List<ShowInfo> data) {
+        super(context, data);
         addItemViewDelegate(new ShowDelegate());
     }
 
