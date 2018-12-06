@@ -28,7 +28,7 @@ public class MainActivity extends BaseMvpActivity implements BottomNavigationBar
     BottomNavigationBar mBottomNavigationBar;
 
     private DateFragment mDateFragment;
-    private FileFragment mImageFragment;
+    private FileFragment mFileFragment;
     private ShowListFragment mShowListFragment;
     private MusicFragment mMusicFragment;
     public Fragment curFragmentTag;
@@ -44,9 +44,9 @@ public class MainActivity extends BaseMvpActivity implements BottomNavigationBar
         //IntentService 为第三方自定义的推送服务事件接收类
         PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), IntentService.class);
 
-        if (mDateFragment == null)
-            mDateFragment = new DateFragment();
-        switchFragment(mDateFragment);
+        if (mFileFragment == null)
+            mFileFragment = new FileFragment();
+        switchFragment(mFileFragment);
 
         mBottomNavigationBar.clearAll();
         mBottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
@@ -69,9 +69,9 @@ public class MainActivity extends BaseMvpActivity implements BottomNavigationBar
     public void onTabSelected(int position) {
         switch (position) {
             case 0:
-                if (mImageFragment == null)
-                    mImageFragment = new FileFragment();
-                switchFragment(mImageFragment);
+                if (mFileFragment == null)
+                    mFileFragment = new FileFragment();
+                switchFragment(mFileFragment);
                 break;
             case 1:
                 if (mShowListFragment == null)
@@ -122,8 +122,8 @@ public class MainActivity extends BaseMvpActivity implements BottomNavigationBar
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (curFragmentTag == mImageFragment)
-            mImageFragment.onActivityResult(requestCode, resultCode, data);
+        if (curFragmentTag == mFileFragment)
+            mFileFragment.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
