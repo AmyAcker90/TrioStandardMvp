@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.trio.standard.R;
-import com.trio.standard.api.bean.Category;
+import com.trio.standard.bean.Category;
 
 import java.util.List;
 

@@ -8,7 +8,7 @@ import android.os.Environment;
 
 public class HttpConstant {
 
-    public final static String url = "http://192.168.1.135:8080/standard/";
+    public final static String url = "http://192.168.1.136:8080/standard/";
 //    public final static String url = "http://10.0.2.2:8080/standard/";
 
     public final static String app_file_dir = Environment.getExternalStorageDirectory() + "/TrioStandard/";

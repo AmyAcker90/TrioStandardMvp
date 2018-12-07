@@ -7,11 +7,13 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.trio.standard.R;
-import com.trio.standard.api.bean.FileBean;
+import com.trio.standard.bean.FileBean;
 import com.trio.standard.constant.HttpConstant;
 import com.trio.standard.module.base.BaseMvpFragment;
-import com.trio.standard.module.file.FilePickActivity;
+import com.trio.standard.mvp.contract.FileContract;
+import com.trio.standard.mvp.presenter.FilePresenter;
 import com.trio.standard.widgets.ImagePicker;
 import com.trio.standard.widgets.ProgressButton;
 import com.zhihu.matisse.Matisse;
@@ -30,7 +32,9 @@ import static com.trio.standard.widgets.ImagePicker.REQUEST_CODE_CHOOSE;
  * Created by lixia on 2018/11/28.
  */
 
-public class FileFragment extends BaseMvpFragment<FileView, FilePresenter> implements FileView {
+public class FileFragment extends BaseMvpFragment<FilePresenter>
+        implements FileContract.FileView {
+
     @Bind(R.id.rb_one)
     RadioButton mRbOne;
     @Bind(R.id.rb_nine)
@@ -81,6 +85,7 @@ public class FileFragment extends BaseMvpFragment<FileView, FilePresenter> imple
     }
 
     public void onProgress(int requestCode, int progress) {
+        LogUtils.i(requestCode + " progress: " + progress);
         switch (requestCode) {
             case HttpConstant.uploadFileBatchCode:
                 mProgressBtUpload.setState(ProgressButton.STATE.PERCENT, null);

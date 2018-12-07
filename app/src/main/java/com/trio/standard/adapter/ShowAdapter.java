@@ -6,7 +6,7 @@ import com.trio.standard.R;
 import com.trio.standard.adapter.base.ItemViewDelegate;
 import com.trio.standard.adapter.base.MultiItemTypeAdapter;
 import com.trio.standard.adapter.base.IViewHolder;
-import com.trio.standard.api.bean.ShowInfo;
+import com.trio.standard.bean.ShowInfo;
 
 import java.util.List;
 

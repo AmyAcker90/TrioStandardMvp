@@ -3,17 +3,20 @@ package com.trio.standard.net;
 import com.trio.standard.constant.HttpConstant;
 import com.trio.standard.module.base.BaseResp;
 
-import rx.Observer;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by lixia on 2018/11/27.
  */
 
 public abstract class BaseObserver<T> implements Observer<BaseResp<T>> {
+    @Override
+    public void onSubscribe(Disposable d) {
+    }
 
     @Override
-    public void onCompleted() {
-
+    public void onComplete() {
     }
 
     @Override
@@ -30,7 +33,12 @@ public abstract class BaseObserver<T> implements Observer<BaseResp<T>> {
         }
     }
 
+    /**
+     * Called once the single upstream Disposable is set via onSubscribe.
+     */
     protected abstract void onSuccessResponse(T result);
 
     protected abstract void onErrorResponse(int ret, String msg);
+
+
 }

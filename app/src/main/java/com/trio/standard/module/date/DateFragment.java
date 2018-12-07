@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.trio.standard.R;
 import com.trio.standard.module.base.BaseMvpFragment;
 import com.trio.standard.module.base.BaseView;
+import com.trio.standard.mvp.contract.PushContract;
+import com.trio.standard.mvp.presenter.PushPresenter;
 import com.trio.standard.widgets.CustomToolBar;
 import com.trio.standard.widgets.ProgressButton;
 
@@ -22,7 +24,7 @@ import butterknife.OnClick;
  * Created by lixia on 2018/11/28.
  */
 
-public class DateFragment extends BaseMvpFragment<BaseView, DatePresenter> implements BaseView {
+public class DateFragment extends BaseMvpFragment<PushPresenter> implements PushContract.PushView {
 
     @Bind(R.id.customToolBar)
     CustomToolBar mCustomToolBar;
@@ -60,8 +62,8 @@ public class DateFragment extends BaseMvpFragment<BaseView, DatePresenter> imple
     }
 
     @Override
-    protected DatePresenter createPresenter() {
-        return new DatePresenter(mContext, this);
+    protected PushPresenter createPresenter() {
+        return new PushPresenter(mContext, this);
     }
 
     private void permission() {
@@ -120,5 +122,10 @@ public class DateFragment extends BaseMvpFragment<BaseView, DatePresenter> imple
 
     private void onPermissionGranted() {
 
+    }
+
+    @Override
+    public void getOnePush() {
+        showToast("获取推送成功");
     }
 }

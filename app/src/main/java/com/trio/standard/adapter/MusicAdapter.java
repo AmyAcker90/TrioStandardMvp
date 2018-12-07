@@ -6,7 +6,7 @@ import com.trio.standard.R;
 import com.trio.standard.adapter.base.ItemViewDelegate;
 import com.trio.standard.adapter.base.MultiItemTypeAdapter;
 import com.trio.standard.adapter.base.IViewHolder;
-import com.trio.standard.api.bean.MusicBean;
+import com.trio.standard.bean.MusicBean;
 
 import java.util.List;
 

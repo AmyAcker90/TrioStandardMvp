@@ -14,7 +14,7 @@ import com.trio.standard.module.base.BasePresenter;
 import com.trio.standard.module.date.DateFragment;
 import com.trio.standard.module.image.FileFragment;
 import com.trio.standard.module.music.MusicFragment;
-import com.trio.standard.module.show.mainlist.ShowListFragment;
+import com.trio.standard.module.show.ShowListFragment;
 import com.trio.standard.push.IntentService;
 import com.trio.standard.push.PushService;
 

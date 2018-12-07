@@ -42,6 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".module.image.FilePickActivity"/>
 
         <service android:name=".push.IntentService"/>
         <!-- 配置SDK核心服务 -->
@@ -52,8 +53,6 @@
             android:process=":pushservice">
         </service>
 
-        <activity android:name=".module.file.FilePickActivity">
-        </activity>
     </application>
 
 </manifest>

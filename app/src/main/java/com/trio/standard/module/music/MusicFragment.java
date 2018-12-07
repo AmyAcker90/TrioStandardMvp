@@ -11,8 +11,10 @@ import android.view.inputmethod.EditorInfo;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.trio.standard.R;
 import com.trio.standard.adapter.MusicAdapter;
-import com.trio.standard.api.bean.MusicBean;
+import com.trio.standard.bean.MusicBean;
 import com.trio.standard.module.base.BaseMvpFragment;
+import com.trio.standard.mvp.contract.MusicContract;
+import com.trio.standard.mvp.presenter.MusicPresenter;
 import com.trio.standard.widgets.CustomToolBar;
 import com.trio.standard.widgets.DelEditText;
 
@@ -25,7 +27,8 @@ import butterknife.Bind;
  * Created by lixia on 2018/11/30.
  */
 
-public class MusicFragment extends BaseMvpFragment<MusicView, MusicPresenter> implements MusicView {
+public class MusicFragment extends BaseMvpFragment<MusicPresenter>
+        implements MusicContract.MusicView {
 
     @Bind(R.id.customToolBar)
     CustomToolBar mCustomToolBar;
@@ -88,6 +91,11 @@ public class MusicFragment extends BaseMvpFragment<MusicView, MusicPresenter> im
             isBottom = false;
             queryData(true);
         });
+    }
+
+    @Override
+    public void setRefreshing(boolean isRefreshing) {
+        mSwipeRefresh.setRefreshing(isRefreshing);
     }
 
     private void queryData(boolean isRefresh) {
